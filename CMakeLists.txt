@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.8)
+include(ExternalProject)
+enable_testing()
+
+project(tiny)
+
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    SET(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG} /MTd")
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+    SET(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} /MT")
+    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+endif()
+
+option(TINY_CORE "Build tiny_core library" ON)
+option(TINY_TEST "Build tiny engine test executable" ON)
+
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/../install CACHE PATH "default install path" FORCE)
+endif()
+
+if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
+    set(CMAKE_INSTALL_LIBDIR lib)
+endif()
+set(libdir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/../riku/CMakeLists.txt")
+    include_directories(${CMAKE_SOURCE_DIR}/../riku/include/)
+    add_subdirectory("${CMAKE_SOURCE_DIR}/../riku" "${CMAKE_CURRENT_BINARY_DIR}/riku_build")
+else()
+    message(FATAL_ERROR "RIKU not found, please download to the same folder as tinyeng.")
+endif()
+
+include_directories(include/)
+add_subdirectory(tiny)
+if(TINY_CORE)
+    add_subdirectory(tiny_core)
+endif()
+if(TINY_TEST)
+    add_subdirectory(test)
+endif()

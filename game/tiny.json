@@ -1,0 +1,22 @@
+{
+	"Spaces" : {
+		"Game"    : "game/lvl/game.json",
+		"Pause"   : "game/lvl/pause.json",
+		"Credits" : "game/lvl/credits.json",
+		"Help"    : "game/lvl/help.json"
+	},
+	"Settings" : {
+	},
+	"Systems" : {
+	},
+	"Jobs" : {
+		"start" : {
+		},
+		"update" : {
+		},
+		"render" : {
+		},
+		"finish" : {
+		}
+	}
+}

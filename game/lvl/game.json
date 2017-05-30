@@ -1,0 +1,36 @@
+{
+	"active" : true,
+	"update" : {
+		"riku::type" : "tiny::job_list",
+		"list" : [
+			{
+				"riku::type" : "tiny::job_list",
+				"list" : [
+				]
+			}
+		]
+	},
+	"entities" : [
+		{
+			"archetype" : "Box",
+			"components" : {
+				"transform" : {
+				}
+			}
+		},
+		{
+			"archetype" : "Grid",
+			"components" : {
+				"transform" : {
+				}
+			}
+		},
+		{
+			"archetype" : "Camera",
+			"components" : {
+				"transform" : {
+				}
+			}
+		}
+	]
+}
