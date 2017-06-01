@@ -9,9 +9,8 @@ set_target_properties(tiny PROPERTIES
     DEBUG_POSTFIX -d
     FOLDER tiny
 )
+target_link_libraries(tiny RIKU)
 set(install_libs ${install_libs} tiny)
-
-target_link_libraries(tiny riku)
 
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/include

@@ -23,11 +23,22 @@ if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
 endif()
 set(libdir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 
-if(EXISTS "${CMAKE_SOURCE_DIR}/../riku/CMakeLists.txt")
-    include_directories(${CMAKE_SOURCE_DIR}/../riku/include/)
-    add_subdirectory("${CMAKE_SOURCE_DIR}/../riku" "${CMAKE_CURRENT_BINARY_DIR}/riku_build")
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/../RIKU/CMakeLists.txt")
+    # Download and unpack RIKU at configure time
+    configure_file(CMakeLists.txt.in ${CMAKE_BINARY_DIR}/tiny-reqs/CMakeLists.txt)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tiny-reqs" )
+    execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tiny-reqs" )
+endif()
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/../RIKU/CMakeLists.txt")
+    message(STATUS "RIKU found and added to build!")
+    include_directories(${CMAKE_SOURCE_DIR}/../RIKU/include/)
+    set(RIKU_TEST OFF CACHE BOOL " ")
+    add_subdirectory("${CMAKE_SOURCE_DIR}/../RIKU" "${CMAKE_CURRENT_BINARY_DIR}/riku_build")
 else()
-    message(FATAL_ERROR "RIKU not found, please download to the same folder as tinyeng.")
+    message(FATAL_ERROR "Unable to find or download RIKU, something's gone wrong.")
 endif()
 
 include_directories(include/)
