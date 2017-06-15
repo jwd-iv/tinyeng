@@ -1,7 +1,7 @@
 include_directories(${CMAKE_SOURCE_DIR}/include/)
 
 file(GLOB_RECURSE TINY_src *.cpp)
-file(GLOB_RECURSE TINY_hdr ${CMAKE_SOURCE_DIR}/include/*.h*)
+file(GLOB_RECURSE TINY_hdr ${CMAKE_CURRENT_SOURCE_DIR}/../include/*.h*)
 
 add_library(tiny STATIC ${TINY_src} ${TINY_hdr})
 set_target_properties(tiny PROPERTIES

@@ -31,7 +31,7 @@ namespace tiny
       iter("render", a);
   }
 
-  guid space::create(riku::typeinfo t)
+  guid space::create(riku::typeinfo t, char const* archetype)
   {
     if (t == riku::get<entity>())
     {

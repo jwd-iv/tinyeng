@@ -29,6 +29,7 @@ struct ttvfs_handle : public tiny::filesystem::handle
   virtual unsigned pos() const;
   virtual int seek(unsigned p);
   virtual unsigned read(char* mem, unsigned len);
+  virtual std::string readline(unsigned len);
 
 protected:
   friend struct ttvfs_system;

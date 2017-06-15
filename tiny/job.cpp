@@ -4,12 +4,25 @@ namespace tiny
 {
   bool job::blocking() const
   {
-    return true;
+    return false;
   }
 
   char const* job::lane() const
   {
     return NULL;
+  }
+
+  riku::var<space> job::world() const
+  {
+    __debugbreak();
+    job::handle b = boss;
+    while (b.data() != NULL)
+    {
+      if (b.meta()->has_parent(riku::get<space>()))
+        return b.to<space>();
+      b = b->boss;
+    }
+    return riku::var<space>();
   }
   
   void job_list::add(job::handle j, int priority)

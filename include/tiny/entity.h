@@ -1,12 +1,15 @@
 namespace tiny
 {
+  struct entity;
+
   struct component
   {
-    guid me, parent;
+    guid me;
+    riku::var<entity> parent;
 
     virtual bool notify(char const* message, riku::variant data);
 
-    rkMetaHook(component);
+    rkMetaHandle(component);
   };
 
   struct entity : public component
@@ -27,15 +30,13 @@ namespace tiny
     virtual bool deserialize(riku::variant_type const& blob);
     virtual bool serialize(riku::variant_type& blob) const;
 
-    rkMetaHook(entity);
+    template<typename T> inline T* find(bool useparent = false) const
+    {
+      return find(riku::get<T>()->name().c_str(), useparent).to<T>();
+    }
+
+    rkMetaHandle(entity);
   };
 }
 
-struct transform : public tiny::component
-{
-  float pX, pY, pZ;
-  float sX, sY, sZ;
-  float rX, rY, rZ, theta;
-
-  rkMetaHook(transform);
-};
+#include "event.h"

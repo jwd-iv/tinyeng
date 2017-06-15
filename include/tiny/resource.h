@@ -1,33 +1,31 @@
 namespace tiny
 {
-  /*struct resource
+  struct resource
   {
     std::string filename;
 
-    virtual std::string extensions() const = 0;
-    virtual bool Load(FileHandle file) = 0; //take the file and process its contents
-    virtual bool Unload() = 0; //free all allocated memory, etc.
+    virtual std::string extensions() const = 0; //report which extensions fall under this resource
+    virtual bool load(tiny::file f) = 0; //take the file and process its contents
+    virtual bool unload() = 0; //free all allocated memory, etc.
 
-    PUPA_DataHook(Resource);
+    rkMetaHandle(resource);
   };
 
-  class ResourceManager : public Service
+  class resourcemanager : public system
   {
   public:
-    bool IsResource(char const* filename) const;
+    resource::handle load(char const* filename);
+    bool unload(resource::handle res);
 
-    Data::Handle Load(char const* filename);
-    bool Unload(Data::Handle resource);
-
-    // Inherited via Service
-    virtual void Initialize();
-    virtual void Close();
-    virtual void Update(float dt);
+    // Inherited via system
+    virtual void initialize();
+    virtual void close();
+    virtual void update(float dt);
 
   private:
-    std::unordered_map<std::string, Meta::TypeInfo> resTypes;
-    std::unordered_map<std::string, Data::Handle> loaded;
+    std::unordered_map<std::string, riku::typeinfo> resTypes;
+    std::unordered_map<std::string, riku::var<resource> > loaded;
 
-    META_Hook(ResourceManager);
-  };*/
+    rkMetaHook(resourcemanager);
+  };
 }

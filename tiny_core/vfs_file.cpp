@@ -9,7 +9,7 @@ void ttvfs_system::initialize()
   filesys.AddLoader(new ttvfs::DiskLoader);
   //filesys.AddArchiveLoader(new ttvfs::VFSZipArchiveLoader);
 
-  filesys.Mount("", "game");
+  filesys.Mount("", "");
   filesys.Mount(ttvfs::GetUserDir().c_str(), "user");
 }
 
@@ -78,4 +78,10 @@ unsigned ttvfs_handle::read(char* mem, unsigned len)
   }
 
   return 0;
+}
+
+std::string ttvfs_handle::readline(unsigned len)
+{
+  __debugbreak(); //TODO: JAY NEEDS TO FILL THIS IN
+  return std::string();
 }

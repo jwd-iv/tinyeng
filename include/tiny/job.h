@@ -1,6 +1,7 @@
 namespace tiny
 {
   class job_manager;
+  struct space;
 
   class job
   {
@@ -10,14 +11,14 @@ namespace tiny
     virtual bool done() const = 0;
     virtual void finish() = 0;
 
-    virtual bool blocking() const;    //blocks by default
+    virtual bool blocking() const;    //nonblocking by default
     virtual char const* lane() const; //no lane by default
 
-    typedef riku::var<job> handle;
+    virtual riku::var<space> world() const;
 
     riku::var<job_manager> boss;
 
-    rkMetaHook(job);
+    rkMetaHandle(job);
   };
 
   struct function_job : public job
@@ -49,7 +50,7 @@ namespace tiny
     typedef std::unordered_map<std::string, riku::variant> blackboard;
     blackboard board = blackboard();
 
-    rkMetaHook(job_manager);
+    rkMetaHandle(job_manager);
   };
 
   struct job_list : public job_manager

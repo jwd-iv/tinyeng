@@ -7,7 +7,7 @@ namespace tiny
     virtual void update(float dt);
     virtual void render(float a);
 
-    virtual guid create(riku::typeinfo t);
+    virtual guid create(riku::typeinfo t, char const* archetype = NULL);
     virtual void destroy(guid ID);
 
     virtual riku::array get_all(riku::typeinfo t) const;
@@ -29,5 +29,7 @@ namespace tiny
   protected:
     allocator objects = allocator(riku::find("tiny::entity"));
     std::unordered_map< std::string, riku::var<allocator> > factory;
+
+    rkMetaHandle(space);
   };
 }

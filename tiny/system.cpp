@@ -41,7 +41,7 @@ namespace tiny
       riku::typelist children = systype->children(true);
       for (auto iter = children.rbegin(); iter != children.rend(); ++iter)
       {
-        if (*iter == riku::find("tiny::null_system") && children.size() > 1)
+        if (*iter == riku::find("tiny::null_system"))
           continue;
         if (create(*iter) != NULL)
           return get(systype->name().c_str());
@@ -82,77 +82,6 @@ namespace tiny
 
 namespace tiny
 {
-  std::string filesystem::handle::name() const
-  {
-    auto fname = filename();
-
-    if (fname.find_last_of('\\') < fname.length())
-      fname = fname.substr(fname.find_last_of('\\'));
-
-    return fname.substr(0, fname.find_last_of('.'));
-  }
-
-  std::string filesystem::handle::ext() const
-  {
-    return filename().substr(filename().find_last_of('.') + 1);
-  }
-
-  std::string filesystem::handle::folder() const
-  {
-    return filename().substr(0, filename().find_last_of('\\'));
-  }
-
-  void filesystem::update(float) {}
-}
-
-namespace tiny
-{
-  void serializer::initialize()
-  {
-    for (auto const& fmt : riku::get<format>()->children())
-    {
-      riku::var<format> interpreter(riku::val(fmt, fmt->mem_funcs.create()));
-      if (interpreter.data() != NULL)
-        formats[interpreter->ext()] = interpreter;
-    }
-  }
-
-  riku::variant serializer::parse(char const* text, char const* fmt) const
-  {
-    auto pair = formats.find(fmt);
-    if(pair == formats.end())
-      return riku::variant();
-
-    return pair->second->parse(text);
-  }
-
-  riku::variant serializer::parse(char const* file) const
-  {
-    auto f = systems::get<filesystem>()->open(file);
-    if (f.data() == NULL)
-      return riku::variant();
-
-    f->seek(0);
-    char* contents = new char[f->size() + 1];
-    contents[f->read(contents)] = NULL;
-
-    auto ret = parse(contents, f->ext().c_str());
-    delete[] contents;
-
-    return ret;
-  }
-
-  void serializer::update(float dt)
-  {
-  }
-
-  void serializer::close()
-  {
-  }
-}
-
-namespace tiny
-{
   struct null_system : public filesystem, public input, public frc, public window, public renderer
   {
     virtual void initialize() {}
@@ -166,11 +95,15 @@ namespace tiny
     virtual bool time_left() const { return engine::get().running; }
     virtual float dt() const { return .0f; }
     virtual float df() const { return .0f; }
+    virtual float alpha() const { return .0f; }
 
     virtual bool is_active() const { return false; }
     virtual bool show() { return false; }
     virtual bool hide() { return false; }
+    virtual unsigned width() const { return 0; }
+    virtual unsigned height() const { return 0; }
     virtual void render() {}
+    virtual void render(float) {}
     virtual bool is_fullscreen() const { return false; }
     virtual bool set_size(unsigned w, unsigned h, bool fullscreen = false) { return false; }
 

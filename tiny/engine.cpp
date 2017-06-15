@@ -85,7 +85,7 @@ namespace tiny
       for (auto& pair : spaces)
         pair.second->render(.0f);
 
-      systems::get<renderer>()->render();
+      systems::get<renderer>()->render(systems::get<frc>()->alpha());
       systems::get<window>()->render();
     }
   }

@@ -2,63 +2,6 @@
 
 namespace tiny
 {
-/*  bool ResourceManager::IsResource(char const* filename) const
-  {
-    if (filename == NULL || std::string("") == filename)
-      return false;
-
-    auto file = Systems::Get<FileService>()->Open(filename);
-    if (file.Data() == NULL || !file->Exists())
-    {
-      Systems::Get<FileService>()->Close(file);
-      return false;
-    }
-    
-    bool found = false;
-    auto pair = resTypes.find(file->Ext());
-    Systems::Get<FileService>()->Close(file);
-    return pair != resTypes.end();
-  }
-
-  Data::Handle ResourceManager::Load(char const* filename)
-  {
-    if(!IsResource(filename))
-      return Data::Handle();
-
-    auto pair = loaded.find(filename);
-    if (pair != loaded.end())
-      return pair->second;
-
-    auto file = Systems::Get<FileService>()->Open(filename);
-    auto type = resTypes[file->Ext()];
-    
-    Resource* res = static_cast<Resource*>(type->Factory().New());
-
-    if (res != NULL)
-    {
-      res->filename = filename;
-      res->Load(file); //TODO: handle this function returning false
-      loaded[filename] = res->GetID();
-    }
-
-    Systems::Get<FileService>()->Close(file);
-    return res == NULL ? Data::Handle() : res->GetID();
-  }
-
-  bool ResourceManager::Unload(Data::Handle resource)
-  {
-    Resource* res = resource.To<Resource>();
-    if(res == NULL)
-      return false;
-    else
-    {
-      bool success = res->Unload();
-      loaded.erase(res->filename);
-      res->GetType()->Factory().Delete(res);
-      return success;
-    }
-  }
-
   std::vector<std::string> ParseExt(std::string extensions)
   {
     std::vector<std::string> exts;
@@ -81,35 +24,47 @@ namespace tiny
     return exts;
   }
 
-  void ResourceManager::Initialize()
+  void resourcemanager::initialize()
   {
-    std::list<Meta::TypeInfo> resources;
+    std::list<riku::typeinfo> resources;
 
-    for (auto const& iter : Meta::GetType<Resource>()->children)
+    for (auto const& iter : riku::get<resource>()->children())
       resources.push_back(iter);
 
     while (!resources.empty())
     {
-      Meta::TypeInfo rtype = resources.front();
+      riku::typeinfo rtype = resources.front();
       resources.pop_front();
 
-      for (auto const& iter : rtype->children)
+      for (auto const& iter : rtype->children())
         resources.push_back(iter);
 
-      auto res = rtype->Create();
-      if (res.Data() != NULL)
-        for (auto const& ext : ParseExt(res.To<Resource>()->Extensions()))
+      riku::ptr res(rtype, rtype->mem_funcs.create());
+      if (res.data() != NULL)
+      {
+        for (auto const& ext : ParseExt(res.to<resource>()->extensions()))
           resTypes[ext] = rtype;
+      }
     }
   }
 
-  void ResourceManager::Close()
+  void resourcemanager::close()
   {
-    while (!loaded.empty())
-      Unload(loaded.begin()->second);
+    //while (!loaded.empty())
+    //  Unload(loaded.begin()->second);
   }
 
-  void ResourceManager::Update(float dt)
+  resource::handle resourcemanager::load(char const * filename)
   {
-  }*/
+    return resource::handle();
+  }
+
+  bool resourcemanager::unload(resource::handle res)
+  {
+    return false;
+  }
+
+  void resourcemanager::update(float dt)
+  {
+  }
 }
