@@ -13,6 +13,8 @@ struct ttvfs_system : public tiny::filesystem
   virtual void initialize();
   virtual void update(float);
   virtual void close();
+
+  bool exists(char const* filename);
   virtual riku::var<handle> open(char const* filename);
 
 protected:

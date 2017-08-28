@@ -22,6 +22,7 @@ namespace tiny
       rkMetaHook(handle);
     };
 
+	virtual bool exists(char const* filename) = 0;
     virtual riku::var<handle> open(char const* filename) = 0;
 
     virtual void update(float);

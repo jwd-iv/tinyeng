@@ -9,7 +9,7 @@ void ttvfs_system::initialize()
   filesys.AddLoader(new ttvfs::DiskLoader);
   //filesys.AddArchiveLoader(new ttvfs::VFSZipArchiveLoader);
 
-  filesys.Mount("", "");
+  filesys.Mount("", "game");
   filesys.Mount(ttvfs::GetUserDir().c_str(), "user");
 }
 
@@ -21,6 +21,14 @@ void ttvfs_system::update(float)
 void ttvfs_system::close()
 {
   filesys.Clear();
+}
+
+bool ttvfs_system::exists(char const* filename)
+{
+  std::string fname(filename);
+  ttvfs::FixSlashes(fname);
+
+  return filesys.GetFile(fname.c_str()) != NULL;
 }
 
 riku::var<tiny::filesystem::handle> ttvfs_system::open(char const* filename)

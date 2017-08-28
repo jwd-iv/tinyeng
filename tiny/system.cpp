@@ -88,6 +88,7 @@ namespace tiny
     virtual void update(float dt) {}
     virtual void close() {}
 
+    virtual bool exists(char const* filename) { return false; }
     virtual riku::var<handle> open(char const* filename) { return riku::var<handle>(); }
 
     virtual void begin_frame() {}
