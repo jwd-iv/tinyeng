@@ -34,6 +34,7 @@ namespace tiny
         continue;
 
       spaces[name.c_str()] >> *spc;
+      spc->start();
     }
   }
 

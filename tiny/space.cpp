@@ -99,6 +99,8 @@ namespace tiny
         ent.assignto(create(riku::get<entity>()));
       }
     }
+    blob["update"] >> update_jobs;
+    blob["render"] >> render_jobs;
     return false;
   }
 

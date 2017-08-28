@@ -24,6 +24,7 @@ namespace tiny
     } id;
 
     friend struct guid_database;
+    rkMetaHook(guid);
   };
 
   struct guid_database : public system

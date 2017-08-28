@@ -14,11 +14,10 @@ namespace tiny
 
   riku::var<space> job::world() const
   {
-    __debugbreak();
     job::handle b = boss;
     while (b.data() != NULL)
     {
-      if (b.meta()->has_parent(riku::get<space>()))
+      if (b.type()->has_parent(riku::get<space>()))
         return b.to<space>();
       b = b->boss;
     }
@@ -115,7 +114,7 @@ namespace tiny
             if (newjob.data() != NULL)
             {
               iter.assignto(newjob);
-              jobs.push_back(newjob);
+              add(newjob);
             }
           }
         }
