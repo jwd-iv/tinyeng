@@ -1,8 +1,9 @@
 namespace tiny
 {
+  //! Implementation of variant for translating an ID into an object transparently
   struct guid : public riku::variant_type
   {
-    template<typename T> static guid create(T* obj);
+    template<typename T> static guid create(T* obj); //!< Make a new guid for `obj`
 
     guid();
     guid(guid const& rhs);
@@ -27,11 +28,12 @@ namespace tiny
     rkMetaHook(guid);
   };
 
+  //! system for managing all existing guids
   struct guid_database : public system
   {
-    guid add_entry(riku::variant e);
-    riku::variant get_entry(guid id) const;
-    void remove_entry(guid id);
+    guid add_entry(riku::variant e);        //!< Create a new guid for an object
+    riku::variant get_entry(guid id) const; //!< Retrieve the object based on guid
+    void remove_entry(guid id);             //!< Erase an object's ID (invalidates that guid)
 
     // Inherited via system
     virtual void initialize();
@@ -55,7 +57,6 @@ namespace tiny
     rkMetaHook(guid_database);
   };
 
-  //put obj in the database and make a guid of its id
   template<typename T> guid guid::create(T* obj)
   {
     if(obj != NULL)

@@ -1,5 +1,8 @@
 namespace tiny
 {
+  /**
+   * @brief      Page-based object allocator using RIKU's memory functions.
+   */
   struct allocator
   {
     allocator(riku::typeinfo t);
@@ -7,7 +10,7 @@ namespace tiny
     virtual riku::variant allocate();
     virtual bool free(riku::variant v);
 
-    virtual unsigned capacity() const;
+    virtual unsigned capacity() const;  
     virtual unsigned allocated() const;
     virtual unsigned available() const;
 

@@ -84,7 +84,7 @@ namespace tiny
         render.update(systems::get<frc>()->df());
 
       for (auto& pair : spaces)
-        pair.second->render(.0f);
+        pair.second->render(systems::get<frc>()->df());
 
       systems::get<renderer>()->render(systems::get<frc>()->alpha());
       systems::get<window>()->render();

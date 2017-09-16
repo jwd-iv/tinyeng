@@ -5,17 +5,17 @@ namespace tiny
 {
   namespace systems
   {
-    static std::vector< riku::var<system> > g_systems;
+    static std::vector<system::handle> g_systems;
 
     void initialize()
     {
       //later on this will assert that they're not riku::null_system
-      assert(get<filesystem>() != NULL);
-      assert(get<serializer>() != NULL);
-      assert(get<input>() != NULL);
-      assert(get<frc>() != NULL);
-      assert(get<window>() != NULL);
-      assert(get<renderer>() != NULL);
+      assert(get<filesystem>().data() != NULL);
+      assert(get<serializer>().data() != NULL);
+      assert(get<input>().data() != NULL);
+      assert(get<frc>().data() != NULL);
+      assert(get<window>().data() != NULL);
+      assert(get<renderer>().data() != NULL);
     }
 
     void update(float dt)
@@ -65,7 +65,7 @@ namespace tiny
       }
     }
 
-    system* get(char const* name)
+    system::handle get(char const* name)
     {
       riku::typeinfo systype = riku::find(name);
       if (systype == NULL)
@@ -84,27 +84,27 @@ namespace tiny
 {
   struct null_system : public filesystem, public input, public frc, public window, public renderer
   {
-    virtual void initialize() {}
+    virtual void initialize()     {}
     virtual void update(float dt) {}
-    virtual void close() {}
+    virtual void close()          {}
 
     virtual bool exists(char const* filename) { return false; }
-    virtual riku::var<handle> open(char const* filename) { return riku::var<handle>(); }
+    virtual file open(char const* filename)   { return file(); }
 
-    virtual void begin_frame() {}
-    virtual void end_frame() {}
+    virtual void begin_frame()     {}
+    virtual void end_frame()       {}
     virtual bool time_left() const { return engine::get().running; }
-    virtual float dt() const { return .0f; }
-    virtual float df() const { return .0f; }
-    virtual float alpha() const { return .0f; }
+    virtual float dt() const       { return .0f; }
+    virtual float df() const       { return .0f; }
+    virtual float alpha() const    { return .0f; }
 
-    virtual bool is_active() const { return false; }
-    virtual bool show() { return false; }
-    virtual bool hide() { return false; }
-    virtual unsigned width() const { return 0; }
+    virtual bool is_active() const  { return false; }
+    virtual bool show()             { return false; }
+    virtual bool hide()             { return false; }
+    virtual unsigned width() const  { return 0; }
     virtual unsigned height() const { return 0; }
-    virtual void render() {}
-    virtual void render(float) {}
+    virtual void render()           {}
+    virtual void render(float)      {}
     virtual bool is_fullscreen() const { return false; }
     virtual bool set_size(unsigned w, unsigned h, bool fullscreen = false) { return false; }
 

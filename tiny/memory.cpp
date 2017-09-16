@@ -1,6 +1,8 @@
 #include "tiny.h"
 #include <algorithm>
 
+//TODO: manage one giant pool of memory here that is then broken up and eaten by all allocators
+
 #define LEFT_PAD 2
 #define ALIGN_ON 4
 
@@ -9,14 +11,24 @@
 
 namespace tiny
 {
+  /**
+   * @brief      Creates an allocator of the given type, which cannot be changed later.
+   *
+   * @param[in]  t     The type information of the objects to allocate.
+   */
   allocator::allocator(riku::typeinfo t) : type(t)
   {
-    blocks_per_page = 1024; //look this up when riku::attributes are a thing
+    blocks_per_page = 1024; //TODO: look this up when riku::attributes are a thing
     block_size = std::max(size_t(type->size() + LEFT_PAD), sizeof(unsigned char*));
     if (block_size % ALIGN_ON) //rudimentary alignment
       block_size += ALIGN_ON - (block_size % ALIGN_ON);
   }
 
+  /**
+   * @brief      Allocates another object, adding a new page if necessary.
+   *
+   * @return     A variant pointing at the new object.
+   */
   riku::variant allocator::allocate()
   {
     if (free_list == NULL)
@@ -31,6 +43,13 @@ namespace tiny
     return riku::ptr(type, type->mem_funcs.create(block + LEFT_PAD));
   }
   
+  /**
+   * @brief      Deallocates the object (including destructor if reflected).
+   *
+   * @param[in]  v     A variant created by this allocator
+   *
+   * @return     true if deallocation was successful, false otherwise.
+   */
   bool allocator::free(riku::variant v)
   {
     if (v.type() != type || v.data() == NULL)
@@ -38,7 +57,7 @@ namespace tiny
 
     unsigned char* block = ((unsigned char*)v.data()) - LEFT_PAD;
     if (*block == IN_USE)
-    {
+    { //TODO: add extra pad bytes and use to store typeinfo for verification
       type->mem_funcs.destroy(v.data());
       add_to_free_list(block);
       return true;
@@ -47,16 +66,29 @@ namespace tiny
     return false;
   }
 
+  /**
+   * @brief      How many objects this allocator can hold at once before adding more pages.
+   *
+   * @return     Current number of pages * how many objects are on a page.
+   */
   unsigned allocator::capacity() const
   {
     return pages.size() * blocks_per_page;
   }
 
+  /**
+   * @brief      How many objects are currently in use.
+   *
+   * @return     capacity() - length of the free list.
+   */
   unsigned allocator::allocated() const
   {
     return capacity() - available();
   }
 
+  /**
+   * @brief      How many more objects can be created before allocating more memory.
+   */
   unsigned allocator::available() const
   {
     unsigned count = 0;
@@ -69,6 +101,11 @@ namespace tiny
     return count;
   }
 
+  /**
+   * @brief      Generates a list of all objects currently allocated.
+   *
+   * @return     An array of the objects in memory order.
+   */
   riku::array allocator::in_use() const
   {
     riku::array ret;
