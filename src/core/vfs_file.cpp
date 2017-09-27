@@ -1,4 +1,4 @@
-#include "vfs_file.h"
+#include "core/vfs_file.h"
 #include <iostream>
 
 void ttvfs_system::initialize()
@@ -31,7 +31,7 @@ bool ttvfs_system::exists(char const* filename)
   return filesys.GetFile(fname.c_str()) != NULL;
 }
 
-riku::var<tiny::filesystem::handle> ttvfs_system::open(char const* filename)
+tiny::file ttvfs_system::open(char const* filename)
 {
   std::string fname(filename);
   ttvfs::FixSlashes(fname);
@@ -40,7 +40,7 @@ riku::var<tiny::filesystem::handle> ttvfs_system::open(char const* filename)
   f.fp = filesys.GetFile(fname.c_str());
   if(f.fp != NULL)
     return riku::val(f);
-  return riku::variant();
+  return tiny::file();
 }
 
 std::string ttvfs_handle::filename() const

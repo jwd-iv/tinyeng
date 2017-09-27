@@ -60,7 +60,7 @@ namespace tiny
   private:
     std::unordered_map< std::string, riku::var<format> > formats;
 
-    rkMetaHook(serializer);
+    rkMetaHandle(serializer);
   };
 }
 

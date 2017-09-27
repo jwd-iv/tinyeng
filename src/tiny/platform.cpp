@@ -2,7 +2,7 @@
 
 namespace tiny
 {
-  std::string filesystem::handle::name() const
+  std::string filesystem::file::name() const
   {
     auto fname = filename();
 
@@ -12,17 +12,17 @@ namespace tiny
     return fname.substr(0, fname.find_last_of('.'));
   }
 
-  std::string filesystem::handle::ext() const
+  std::string filesystem::file::ext() const
   {
     return filename().substr(filename().find_last_of('.') + 1);
   }
 
-  std::string filesystem::handle::folder() const
+  std::string filesystem::file::folder() const
   {
     return filename().substr(0, filename().find_last_of('\\'));
   }
 
-  std::string filesystem::handle::contents()
+  std::string filesystem::file::contents()
   {
     __debugbreak();
     char* buf = new char[size()];

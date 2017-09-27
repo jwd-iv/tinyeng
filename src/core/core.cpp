@@ -1,14 +1,15 @@
 #include "tiny.h"
-#include "vfs_file.h"
-#include "json_format.h"
+#include "core/vfs_file.h"
+#include "core/json_format.h"
 
+rkLink(tiny)
 rkExportLib(tiny_core)
 
 rkType(ttvfs_system, rkParent(tiny::filesystem)
   rkStaticFactory
 )
 
-rkType(ttvfs_handle, rkParent(tiny::filesystem::handle)
+rkType(ttvfs_handle, rkParent(tiny::filesystem::file)
   rkDefaultFactory
 )
 

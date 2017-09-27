@@ -30,7 +30,7 @@ namespace tiny
      *
      * @return     NULL if a system implementing the requested type is not found, the system pointer otherwise
      */
-    system::handle get(char const* name);
+    system* get(char const* name);
 
     /**
      * @brief      Templated shortcut for finding a system and getting the appropriate pointer
@@ -39,7 +39,7 @@ namespace tiny
      *
      * @return     A handle to the first system in order that is or inherits the requested type, NULL if nothing was found
      */
-    template<typename T> inline T::handle get()
+    template<typename T> inline typename T* get()
     {
       return dynamic_cast<T*>(tiny::systems::get(riku::get<T>()->name().c_str()));
     }

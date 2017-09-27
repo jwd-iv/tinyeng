@@ -6,11 +6,9 @@ project(tiny_core-reqs NONE)
 ExternalProject_Add(ttvfs
     GIT_REPOSITORY    https://github.com/fgenesis/ttvfs.git
     GIT_TAG           master
-    SOURCE_DIR        "${CMAKE_SOURCE_DIR}/../ext/ttvfs"
-    BINARY_DIR        "${CMAKE_SOURCE_DIR}/../ext/ttvfs/build"
+    SOURCE_DIR        "${TINY_SOURCE_DIR}/../ext/ttvfs"
     CONFIGURE_COMMAND ""
     BUILD_COMMAND     ""
     INSTALL_COMMAND   ""
     TEST_COMMAND      ""
-    UPDATE_DISCONNECTED 1
 )

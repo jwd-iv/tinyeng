@@ -15,7 +15,7 @@ struct ttvfs_system : public tiny::filesystem
   virtual void close();
 
   bool exists(char const* filename);
-  virtual riku::var<handle> open(char const* filename);
+  virtual tiny::file open(char const* filename);
 
 protected:
   ttvfs::Root filesys;
@@ -23,7 +23,7 @@ protected:
   rkMetaHook(ttvfs_system);
 };
 
-struct ttvfs_handle : public tiny::filesystem::handle
+struct ttvfs_handle : public tiny::filesystem::file
 {
   // Inherited via handle
   virtual std::string filename() const;

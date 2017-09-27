@@ -1,5 +1,4 @@
-README
-========================================
+
 A C++ component-based game engine, built using [RIKU]. This engine is currently
 intended for small-scale game prototyping, but will eventually be extended to a
 more general-purpose game engine and editor. Also included is the tiny_core
@@ -51,8 +50,8 @@ If you want to use the tiny core library, link `tiny_core` instead of `tiny` wit
 
 ### Link statically
 
-Build and add tinyeng.lib from the `build` folder to your project, and add
-`tinyeng/include` to the list of include directories.
+Build and add tiny.lib and/or tiny_core.lib from the `build` folder to your
+project, and add `tinyeng/include` to the list of include directories.
 
 
 [RIKU]: https://github.com/jwd-iv/RIKU

@@ -11,45 +11,21 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 endif()
 
-option(TINY_CORE "Build tiny_core library" ON)
+option(TINY_DOCS "Build tiny engine documentation"   ON)
 option(TINY_TEST "Build tiny engine test executable" ON)
-option(TINY_DOCS "Build tiny engine documentation" ON)
+option(TINY_CORE "Build tiny core package"           ON)
+option(TINY_GFX  "Build tiny graphics package"       ON)
 
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/../install CACHE PATH "default install path" FORCE)
-endif()
+include_directories(include)
 
-if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
-    set(CMAKE_INSTALL_LIBDIR lib)
-endif()
-set(libdir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+add_subdirectory(src)
 
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/../RIKU/CMakeLists.txt")
-    # Download and unpack RIKU at configure time
-    configure_file(CMakeLists.txt.in ${CMAKE_BINARY_DIR}/tiny-reqs/CMakeLists.txt)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tiny-reqs" )
-    execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tiny-reqs" )
-endif()
+include_directories(${RIKU_SOURCE_DIR}/include)
 
-if(EXISTS "${CMAKE_SOURCE_DIR}/../RIKU/CMakeLists.txt")
-    message(STATUS "RIKU found and added to build!")
-    include_directories(${CMAKE_SOURCE_DIR}/../RIKU/include/)
-    set(RIKU_TEST OFF CACHE BOOL " ")
-    add_subdirectory("${CMAKE_SOURCE_DIR}/../RIKU" "${CMAKE_CURRENT_BINARY_DIR}/riku_build")
-else()
-    message(FATAL_ERROR "Unable to find or download RIKU, something's gone wrong.")
-endif()
-
-include_directories(include/)
-add_subdirectory(tiny)
-if(TINY_CORE)
-    add_subdirectory(tiny_core)
-endif()
 if(TINY_TEST)
     add_subdirectory(test)
 endif()
+
 if(TINY_DOCS)
     add_subdirectory(docs)
 endif()

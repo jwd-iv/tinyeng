@@ -10,12 +10,12 @@ namespace tiny
     void initialize()
     {
       //later on this will assert that they're not riku::null_system
-      assert(get<filesystem>().data() != NULL);
-      assert(get<serializer>().data() != NULL);
-      assert(get<input>().data() != NULL);
-      assert(get<frc>().data() != NULL);
-      assert(get<window>().data() != NULL);
-      assert(get<renderer>().data() != NULL);
+      assert(get<filesystem>() != NULL);
+      assert(get<serializer>() != NULL);
+      assert(get<input>()      != NULL);
+      assert(get<frc>()        != NULL);
+      assert(get<window>()     != NULL);
+      assert(get<renderer>()   != NULL);
     }
 
     void update(float dt)
@@ -41,14 +41,14 @@ namespace tiny
       riku::typelist children = systype->children(true);
       for (auto iter = children.rbegin(); iter != children.rend(); ++iter)
       {
-        if (*iter == riku::find("tiny::null_system"))
+        if (*iter == riku::find("tiny::null_system") && children.size() > 1)
           continue;
         if (create(*iter) != NULL)
           return get(systype->name().c_str());
       }
 
-      g_systems.push_back(riku::ptr(systype, systype->mem_funcs.create()));
-      system* sys = *--g_systems.end();
+      system* sys = reinterpret_cast<system*>(systype->mem_funcs.create());
+      g_systems.push_back(riku::ptr(systype, sys));
 
       if (sys == NULL || !sys->meta()->has_parent(systype))
       {
@@ -61,11 +61,11 @@ namespace tiny
       else
       {
         sys->initialize();
-        return *--g_systems.end();
+        return sys;
       }
     }
 
-    system::handle get(char const* name)
+    system* get(char const* name)
     {
       riku::typeinfo systype = riku::find(name);
       if (systype == NULL)
@@ -88,8 +88,8 @@ namespace tiny
     virtual void update(float dt) {}
     virtual void close()          {}
 
-    virtual bool exists(char const* filename) { return false; }
-    virtual file open(char const* filename)   { return file(); }
+    virtual bool exists(char const* filename)     { return false; }
+    virtual tiny::file open(char const* filename) { return tiny::file(); }
 
     virtual void begin_frame()     {}
     virtual void end_frame()       {}

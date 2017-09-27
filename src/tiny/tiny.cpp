@@ -1,5 +1,7 @@
 #include "tiny.h"
 
+rkExportLib(tiny)
+
 rkType(tiny::engine,
   rkDefaultFactory
 )
@@ -9,7 +11,7 @@ rkType(tiny::allocator, )
 rkType(tiny::system, )
 
 rkType(tiny::filesystem, rkParent(tiny::system))
-rkType(tiny::filesystem::handle, )
+rkType(tiny::filesystem::file, )
 
 rkType(tiny::serializer, rkParent(tiny::system)
   rkStaticFactory

@@ -6,8 +6,7 @@ project(tiny-reqs NONE)
 ExternalProject_Add(RIKU
     GIT_REPOSITORY    https://github.com/jwd-iv/RIKU.git
     GIT_TAG           master
-    SOURCE_DIR        "${CMAKE_SOURCE_DIR}/../RIKU"
-    BINARY_DIR        "${CMAKE_SOURCE_DIR}/../RIKU/build"
+    SOURCE_DIR        "${TINY_SOURCE_DIR}/../RIKU"
     CONFIGURE_COMMAND ""
     BUILD_COMMAND     ""
     INSTALL_COMMAND   ""

@@ -54,7 +54,7 @@ namespace tiny
     void clear_block(mem_block* obj);
     bool is_valid(guid ID) const;
 
-    rkMetaHook(guid_database);
+    rkMetaHandle(guid_database);
   };
 
   template<typename T> guid guid::create(T* obj)

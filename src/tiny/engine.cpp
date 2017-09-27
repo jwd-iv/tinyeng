@@ -44,11 +44,12 @@ namespace tiny
 
     while (running)
     {
-      systems::get<frc>()->begin_frame();
+      frc* FRC = systems::get<frc>();
+      FRC->begin_frame();
 
-      while (running && systems::get<frc>()->time_left())
+      while (running && FRC->time_left())
       {
-        float dt = systems::get<frc>()->dt();
+        float dt = FRC->dt();
 
         systems::update(dt);
 
@@ -81,12 +82,12 @@ namespace tiny
       }
 
       if (!render.done())
-        render.update(systems::get<frc>()->df());
+        render.update(FRC->df());
 
       for (auto& pair : spaces)
-        pair.second->render(systems::get<frc>()->df());
+        pair.second->render(FRC->df());
 
-      systems::get<renderer>()->render(systems::get<frc>()->alpha());
+      systems::get<renderer>()->render(FRC->alpha());
       systems::get<window>()->render();
     }
   }

@@ -47,6 +47,6 @@ namespace tiny
     std::unordered_map<std::string, riku::typeinfo> resTypes;
     std::unordered_map<std::string, resource::handle> loaded;
 
-    rkMetaHook(resourcemanager);
+    rkMetaHandle(resourcemanager);
   };
 }
