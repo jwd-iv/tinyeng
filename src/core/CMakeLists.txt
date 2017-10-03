@@ -15,13 +15,12 @@ set(TTVFS_BUILD_GENERATOR OFF CACHE BOOL " ")
 add_subdirectory("${CMAKE_SOURCE_DIR}/../ext/ttvfs" "${CMAKE_CURRENT_BINARY_DIR}/ttvfs_build" EXCLUDE_FROM_ALL)
 message(STATUS "ttvfs found and added to build!")
 
-include_directories(${RIKU_SOURCE_DIR}/include
-                    .
+include_directories(.
                     ${CMAKE_SOURCE_DIR}/../ext/ttvfs/ttvfs
                     ${CMAKE_SOURCE_DIR}/../ext/ttvfs/ttvfs_zip)
 
 file(GLOB_RECURSE TINY_CORE_src *.cpp)
-file(GLOB_RECURSE TINY_CORE_hdr ${TINY_SOURCE_DIR}/include/core/**.h*)
+file(GLOB_RECURSE TINY_CORE_hdr ../../include/core/*.h*)
 
 add_library(tiny_core STATIC ${TINY_CORE_src} ${TINY_CORE_hdr}) 
 set_target_properties(tiny_core PROPERTIES
@@ -35,9 +34,8 @@ target_link_libraries(tiny_core ttvfs)
 target_link_libraries(tiny_core ttvfs_zip)
 
 install(
-    DIRECTORY ${TINY_SOURCE_DIR}/include/core
-    DESTINATION .
-    FILES_MATCHING PATTERN "**.h*"
+    DIRECTORY ${PROJECT_SOURCE_DIR}/include/core
+    DESTINATION include
 )
 install(
     TARGETS tiny_core

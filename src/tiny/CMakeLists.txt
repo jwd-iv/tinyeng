@@ -18,9 +18,10 @@ include_directories(${RIKU_SOURCE_DIR}/include/)
 include_directories(${TINY_SOURCE_DIR}/include/)
 
 file(GLOB_RECURSE TINY_src *.cpp)
-file(GLOB_RECURSE TINY_hdr ${TINY_SOURCE_DIR}/include/**.h*)
+file(GLOB_RECURSE TINY_h ${TINY_SOURCE_DIR}/include/tiny.h)
+file(GLOB_RECURSE TINY_hdrs ${TINY_SOURCE_DIR}/include/tiny/*.h*)
 
-add_library(tiny STATIC ${TINY_src} ${TINY_hdr})
+add_library(tiny STATIC ${TINY_src} ${TINY_h} ${TINY_hdrs})
 set_target_properties(tiny PROPERTIES
     OUTPUT_NAME tiny
     DEBUG_POSTFIX -d
@@ -29,10 +30,15 @@ set_target_properties(tiny PROPERTIES
 target_link_libraries(tiny RIKU)
 
 install(
-    DIRECTORY ${TINY_SOURCE_DIR}/include/tiny
-    DESTINATION .
-    FILES_MATCHING PATTERN "**.h*"
+    FILES ${PROJECT_SOURCE_DIR}/include/tiny.h
+    DESTINATION include
 )
+
+install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/include/tiny
+    DESTINATION include
+)
+
 install(
     TARGETS tiny
     LIBRARY DESTINATION lib
