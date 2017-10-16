@@ -26,7 +26,7 @@ add_library(tiny_core STATIC ${TINY_CORE_src} ${TINY_CORE_hdr})
 set_target_properties(tiny_core PROPERTIES
     OUTPUT_NAME tiny_core
     DEBUG_POSTFIX -d
-    FOLDER tiny_core
+    FOLDER tiny
 )
 
 target_link_libraries(tiny_core tiny)

@@ -13,8 +13,6 @@ endif()
 
 option(TINY_DOCS "Build tiny engine documentation" ON)
 option(TINY_CORE "Build tiny core package"         ON)
-option(TINY_GFX  "Build tiny graphics package"     ON)
-option(TINY_SFML "Build tiny sfml bindings"        OFF)
 CMAKE_DEPENDENT_OPTION(TINY_TEST "Build tiny engine test executable" ON  "TINY_CORE" OFF)
 
 include_directories(include)

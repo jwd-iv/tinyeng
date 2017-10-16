@@ -9,7 +9,3 @@ endif()
 if(TINY_GFX)
     add_subdirectory(gfx)
 endif()
-
-if(TINY_SFML)
-    add_subdirectory(sfml)
-endif()
