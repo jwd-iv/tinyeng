@@ -41,7 +41,7 @@ namespace tiny
       riku::typelist children = systype->children(true);
       for (auto iter = children.rbegin(); iter != children.rend(); ++iter)
       {
-        if (*iter == riku::find("tiny::null_system") && children.size() > 1)
+        if ((*iter)->name().find("null") != riku::string::npos && children.size() > 1)
           continue;
         if (create(*iter) != NULL)
           return get(systype->name().c_str());
@@ -82,7 +82,7 @@ namespace tiny
 
 namespace tiny
 {
-  struct null_system : public filesystem, public input, public frc, public window, public renderer
+  struct null_files : public filesystem
   {
     virtual void initialize()     {}
     virtual void update(float dt) {}
@@ -91,6 +91,15 @@ namespace tiny
     virtual bool exists(char const* filename)     { return false; }
     virtual tiny::file open(char const* filename) { return tiny::file(); }
 
+    rkMetaHook(null_files);
+  };
+
+  struct null_frc : public frc
+  {
+    virtual void initialize()     {}
+    virtual void update(float dt) {}
+    virtual void close()          {}
+
     virtual void begin_frame()     {}
     virtual void end_frame()       {}
     virtual bool time_left() const { return engine::get().running; }
@@ -98,26 +107,39 @@ namespace tiny
     virtual float df() const       { return .0f; }
     virtual float alpha() const    { return .0f; }
 
+    rkMetaHook(null_frc);
+  };
+
+  struct null_window : public window
+  {
+    virtual void initialize()     {}
+    virtual void update(float dt) {}
+    virtual void close()          {}
+
     virtual bool is_active() const  { return false; }
     virtual bool show()             { return false; }
     virtual bool hide()             { return false; }
     virtual unsigned width() const  { return 0; }
     virtual unsigned height() const { return 0; }
     virtual void render()           {}
-    virtual void render(float)      {}
     virtual bool is_fullscreen() const { return false; }
     virtual bool set_size(unsigned w, unsigned h, bool fullscreen = false) { return false; }
 
-    rkMetaHook(null_system);
+    rkMetaHook(null_window);
+  };
+
+  struct null_renderer : public renderer
+  {
+    virtual void initialize()     {}
+    virtual void update(float dt) {}
+    virtual void close()          {}
+    virtual void render(float)      {}
+
+    rkMetaHook(null_renderer);
   };
 }
 
-rkType(tiny::null_system,
-  rkParent(tiny::filesystem)
-  rkParent(tiny::input)
-  rkParent(tiny::frc)
-  rkParent(tiny::window)
-  rkParent(tiny::renderer)
-
-  rkDefaultFactory
-)
+rkType(tiny::null_files,    rkParent(tiny::filesystem) rkDefaultFactory)
+rkType(tiny::null_frc,      rkParent(tiny::frc)        rkDefaultFactory)
+rkType(tiny::null_window,   rkParent(tiny::window)     rkDefaultFactory)
+rkType(tiny::null_renderer, rkParent(tiny::renderer)   rkDefaultFactory)

@@ -108,7 +108,7 @@ namespace tiny
   public:
     //TODO: Add begin_tick() and end_tick()
     virtual void begin_frame() = 0; //!< Called at the very beginning of the update frame
-    virtual void end_frame() = 0;   //!< Called when one update frame is done
+    virtual void tick() = 0;   //!< Called when one update frame is done
 
     virtual bool time_left() const = 0;
     virtual float dt() const = 0; //!< The duration of each update tick (in seconds)
