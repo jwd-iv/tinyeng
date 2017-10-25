@@ -21,7 +21,7 @@ namespace tiny
     jobs["render"] >> render;
     jobs["finish"] >> finish;
 
-    update.add(riku::val(function_job( []()->bool {return engine::get().running;} )));
+    update.add(riku::val(function_job( []()->bool {return !engine::get().running;} )));
 
     start.start();
     render.start();
@@ -79,6 +79,8 @@ namespace tiny
         for (auto& pair : spaces)
           if(pair.second->active)
             pair.second->update(dt);
+
+        FRC->tick();
       }
 
       if (!render.done())
@@ -90,6 +92,13 @@ namespace tiny
       systems::get<renderer>()->render(FRC->alpha());
       systems::get<window>()->render();
     }
+  }
+
+  void engine::stop()
+  {
+    start.finish();
+    update.finish();
+    render.finish();
   }
 
   void engine::close()

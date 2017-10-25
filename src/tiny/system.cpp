@@ -101,7 +101,7 @@ namespace tiny
     virtual void close()          {}
 
     virtual void begin_frame()     {}
-    virtual void end_frame()       {}
+    virtual void tick()            {}
     virtual bool time_left() const { return engine::get().running; }
     virtual float dt() const       { return .0f; }
     virtual float df() const       { return .0f; }

@@ -106,14 +106,13 @@ namespace tiny
   class frc : public system
   {
   public:
-    //TODO: Add begin_tick() and end_tick()
-    virtual void begin_frame() = 0; //!< Called at the very beginning of the update frame
+    virtual void begin_frame() = 0; //!< Called at the very beginning of the render frame
     virtual void tick() = 0;   //!< Called when one update frame is done
 
     virtual bool time_left() const = 0;
-    virtual float dt() const = 0; //!< The duration of each update tick (in seconds)
-    virtual float df() const = 0; //!< How long the previous render frame took
-    virtual float alpha() const = 0; //!< Unused for now (see https://gafferongames.com/post/fix_your_timestep/)
+    virtual float dt() const = 0;       //!< The duration of each update tick (in seconds)
+    virtual float df() const = 0;       //!< How long the previous render frame took
+    virtual float alpha() const = 0;    //!< Unused for now (see https://gafferongames.com/post/fix_your_timestep/)
 
     virtual void update(float) {}
 
