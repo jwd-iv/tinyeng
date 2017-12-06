@@ -1,4 +1,4 @@
-if(NOT EXISTS "${TINY_SOURCE_DIR}/../ext/ttvfs/CMakeLists.txt")
+if(NOT EXISTS "${tiny_SOURCE_DIR}/../ext/ttvfs/CMakeLists.txt")
     configure_file(CMakeLists.txt.in ${CMAKE_BINARY_DIR}/tiny_core-reqs/CMakeLists.txt)
     execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tiny_core-reqs" )
@@ -6,7 +6,7 @@ if(NOT EXISTS "${TINY_SOURCE_DIR}/../ext/ttvfs/CMakeLists.txt")
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tiny_core-reqs" )
 endif()
 
-if(NOT EXISTS "${TINY_SOURCE_DIR}/../ext/ttvfs/CMakeLists.txt")
+if(NOT EXISTS "${tiny_SOURCE_DIR}/../ext/ttvfs/CMakeLists.txt")
     message(FATAL_ERROR "Unable to find or download ttvfs, something's gone wrong.")
 endif()
 

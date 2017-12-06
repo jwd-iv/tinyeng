@@ -7,8 +7,16 @@ namespace tiny
   {
     static std::vector<system::handle> g_systems;
 
+    system* create(riku::typeinfo systype);
+
     void initialize()
     {
+      //TODO: Replace this loop with a proper init sequence based on info in tiny.json
+      for (auto const& iter : riku::get<system>()->children())
+      {
+        systems::create(iter);
+      }
+
       //later on this will assert that they're not riku::null_system
       assert(get<filesystem>() != NULL);
       assert(get<serializer>() != NULL);
