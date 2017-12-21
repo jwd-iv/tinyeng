@@ -14,7 +14,7 @@ namespace tiny
       //TODO: Replace this loop with a proper init sequence based on info in tiny.json
       for (auto const& iter : riku::get<system>()->children())
       {
-        systems::create(iter);
+        assert(get(iter->name().c_str()) != NULL);
       }
 
       //later on this will assert that they're not riku::null_system

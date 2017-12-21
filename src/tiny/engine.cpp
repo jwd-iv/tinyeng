@@ -12,7 +12,6 @@ namespace tiny
   {
     auto ini = systems::get<tiny::serializer>()->parse("game/tiny.json");
 
-    //for (auto const& iter : ini["Systems"].properties());
     systems::initialize();
 
     auto jobs = ini["Jobs"];
@@ -34,7 +33,11 @@ namespace tiny
         continue;
 
       spaces[name.c_str()] >> *spc;
-      spc->start();
+    }
+
+    for (auto& space : this->spaces)
+    {
+      space.second->start();
     }
   }
 

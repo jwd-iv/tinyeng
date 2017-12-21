@@ -106,6 +106,7 @@ namespace tiny
 
   void space::add(job::handle j, int priority)
   {
+    update_jobs.add(j, priority);
   }
 
   void space::start()
