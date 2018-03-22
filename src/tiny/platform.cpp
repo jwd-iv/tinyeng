@@ -24,12 +24,12 @@ namespace tiny
 
   std::string filesystem::file::contents()
   {
-    __debugbreak();
+    __debugbreak(); /* NOT CURRENTLY WORKING
     char* buf = new char[size()];
     read(buf);
     std::string ret(buf);
-    delete[] buf;
-    return ret;
+    delete[] buf; */
+    return std::string();
   }
 
   void filesystem::update(float) {}
