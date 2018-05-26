@@ -25,7 +25,7 @@ riku::variant translate_json(Json::Value const& val)
   }
 
   case Json::realValue:
-    return val.asDouble();
+    return (float) val.asDouble();
 
   case Json::intValue:
     return val.asInt();

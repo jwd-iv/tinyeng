@@ -79,7 +79,7 @@ namespace tiny
 
     if (!archetype.empty())
     {
-      //grab a copy of the archetype, assign blob to it and use the result
+      //TODO: grab a copy of the archetype, assign blob to it and use the result
     }
 
     auto comps = blob["components"];

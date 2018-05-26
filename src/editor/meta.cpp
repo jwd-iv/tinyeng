@@ -7,4 +7,8 @@
 
 rkExportLib(tinyedit)
 
-rkType(tiny::inspector, rkParent(tiny::system) rkDefaultFactory)
+rkType(tiny::inspector, rkParent(tiny::system) rkDefaultFactory
+  rkMember(active)
+)
+
+rkType(tiny::inspector::view, rkStaticFactory)
