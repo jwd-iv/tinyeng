@@ -1,4 +1,4 @@
-if(NOT EXISTS "${TINY_SOURCE_DIR}/../RIKU/CMakeLists.txt")
+if(NOT EXISTS "${tiny_SOURCE_DIR}/../RIKU/CMakeLists.txt")
     configure_file(CMakeLists.txt.in ${CMAKE_BINARY_DIR}/tiny-reqs/CMakeLists.txt)
     execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tiny-reqs" )
@@ -6,16 +6,16 @@ if(NOT EXISTS "${TINY_SOURCE_DIR}/../RIKU/CMakeLists.txt")
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tiny-reqs" )
 endif()
 
-if(NOT EXISTS "${TINY_SOURCE_DIR}/../RIKU/CMakeLists.txt")
+if(NOT EXISTS "${tiny_SOURCE_DIR}/../RIKU/CMakeLists.txt")
     message(FATAL_ERROR "Unable to find or download RIKU, something's gone wrong.")
 endif()
 
 set(RIKU_TEST OFF CACHE BOOL " ")
-add_subdirectory("${TINY_SOURCE_DIR}/../RIKU" "${CMAKE_CURRENT_BINARY_DIR}/riku_build")
+add_subdirectory("${tiny_SOURCE_DIR}/../RIKU" "${CMAKE_CURRENT_BINARY_DIR}/riku_build")
 message(STATUS "RIKU found and added to build!")
 
 include_directories(${RIKU_SOURCE_DIR}/include/)
-include_directories(${TINY_SOURCE_DIR}/include/)
+include_directories(${tiny_SOURCE_DIR}/include/)
 
 file(GLOB_RECURSE TINY_src *.cpp)
 file(GLOB_RECURSE TINY_h ${tiny_SOURCE_DIR}/include/tiny.h)
