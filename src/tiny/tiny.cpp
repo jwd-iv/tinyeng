@@ -35,7 +35,7 @@ rkType(tiny::resource, )
 rkType(tiny::guid_database, rkParent(tiny::system)
   rkStaticFactory
 )
-rkType(tiny::guid,
+rkType(tiny::guid, rkParent(rk::variant_type)
   rkDefaultFactory
   rkConvertsTo(unsigned long)
 )

@@ -19,9 +19,17 @@ riku::variant translate_json(Json::Value const& val)
 
   case Json::stringValue: {
     if (tiny::systems::get<tiny::filesystem>()->exists(val.asCString()))
-      return tiny::systems::get<tiny::serializer>()->parse(val.asCString());
-    else
-      return val.asString();
+    {
+      auto resource = tiny::systems::get<tiny::resourcemanager>()->load(val.asCString());
+      if (resource.data() != NULL)
+        return resource;
+
+      auto blob = tiny::systems::get<tiny::serializer>()->parse(val.asCString());
+      if (blob.data() != NULL)
+        return blob;
+    }
+
+    return val.asString();
   }
 
   case Json::realValue:
