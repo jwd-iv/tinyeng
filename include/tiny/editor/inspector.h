@@ -19,10 +19,10 @@ namespace tiny
     {
       virtual bool edit(std::string name, riku::variant_type& value);
       virtual bool read(std::string name, riku::variant_type const& value);
-
-      virtual bool add(std::string name, riku::typeinfo type, riku::var<riku::function> get, riku::var<riku::function> set = riku::var<riku::function>(), riku::variant obj = riku::variant());
-
       virtual bool link(std::string name, riku::variant_type& target);
+
+      virtual bool add(std::string name, riku::var<riku::function> button, riku::variant data = riku::variant());
+      virtual bool add(std::string name, riku::typeinfo type, riku::var<riku::function> get, riku::var<riku::function> set = riku::var<riku::function>(), riku::variant obj = riku::variant());
 
       std::unordered_map<std::string, get_set> values;
       std::unordered_map<std::string, riku::variant> links;

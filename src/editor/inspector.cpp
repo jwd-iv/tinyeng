@@ -78,11 +78,12 @@ namespace tiny
 
   void inspector::inspect(riku::variant_type& obj)
   {
-
+    create_view(obj.type()->name().c_str())->edit("", obj);
   }
 
   void inspector::inspect(riku::variant_type const& obj)
   {
+    create_view(obj.type()->name().c_str())->read("", obj);
   }
 
   bool inspector::view::edit(std::string name, riku::variant_type& value)
@@ -91,11 +92,51 @@ namespace tiny
 
     if (target.data() != NULL)
     {
-      return add(name, value.type(),
-        riku::func_ptr(riku::function(send_to_tweakbar)),
-        riku::func_ptr(riku::function(get_from_tweakbar)),
-        target
+      if(translate_type(target) != TW_TYPE_UNDEF)
+        return add(name, value.type(),
+          riku::func_ptr(riku::function(send_to_tweakbar)),
+          riku::func_ptr(riku::function(get_from_tweakbar)),
+          target
         );
+      else if (target.type()->has_parent(rk::get<rk::variant_type>()))
+        return link(name, target);
+      else
+      {
+        if (!name.empty())
+          name += '.';
+
+        bool successful = false;
+
+        for (auto const& fname : target.type()->functions(false, true))
+        {
+          auto func = target.function(fname);
+          if ((func->obj_type != NULL && target.type()->has_parent(func->obj_type))
+             || (func->arg_count == 1 && target.type()->has_parent(func->arg_list[0].type))
+          )
+            successful |= add(name + fname, target.function(fname), target);
+        }
+
+        for (auto const& pname : target.type()->properties(true))
+        {
+          successful |= edit(name + pname, target.property(pname));
+          //TODO: instead add() a get/set that calls the property get()/set() specifically
+        }
+
+        if(!name.empty())
+          name.erase(--name.end());
+        
+        auto delim = name.find_last_of('.');
+        if (delim != name.npos)
+        {
+          std::string parentgroup = name.substr(0, delim), bar = TwGetBarName((TwBar*) window);
+
+          TwDefine((std::string() +
+            "`" + bar + "`/`" + name + "` group='" + parentgroup + "'"
+          ).c_str());
+        }
+
+        return successful;
+      }
     }
 
     return false;
@@ -126,6 +167,16 @@ namespace tiny
 
     values[name] = std::make_tuple(type, get, set, obj);
 
+    //group parsing
+    auto delimiter = name.find_last_of('.');
+    std::string group, label;
+
+    if (delimiter != name.npos)
+    {
+      group = name.substr(0, delimiter);
+      label = name.substr(delimiter + 1);
+    }
+
     return TwAddVarCB(
       (TwBar*) window,
       name.c_str(),
@@ -133,12 +184,21 @@ namespace tiny
       set.data() == NULL ? NULL : invoke_set,
       invoke_get,
       &values[name],
-      ""
+      group.empty()
+        ? NULL
+        : (std::string("group='") + group + "' label='" + label + "'").c_str()
     );
+  }
+
+  bool inspector::view::add(std::string name, riku::func_ptr button, riku::variant data)
+  {
+    //TODO: add a button to the bar that executes the given function with the given data
+    return false;
   }
 
   bool inspector::view::link(std::string name, riku::variant_type& target)
   {
+    //TODO: add(name, function that calls inspector::inspect(target), target)
     return false;
   }
 }

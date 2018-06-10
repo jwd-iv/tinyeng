@@ -86,13 +86,14 @@ namespace tiny
         FRC->tick();
       }
 
-      if (!render.done())
-        render.update(FRC->df());
-
       for (auto& pair : spaces)
         pair.second->render(FRC->df());
 
       systems::get<renderer>()->render(FRC->alpha());
+
+      if (!render.done())
+        render.update(FRC->df());
+
       systems::get<window>()->render();
     }
   }
