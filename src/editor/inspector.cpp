@@ -1,10 +1,12 @@
 #include "tiny.h"
 #include "tiny\editor\inspector.h"
 #include "AntTweakBar.h"
+#include <sstream>
 
 TwType translate_type(riku::variant const& val);
 void TW_CALL invoke_set(const void*, void*);
 void TW_CALL invoke_get(void*, void*);
+void TW_CALL invoke_button(void*);
 void get_from_tweakbar(riku::variant&, void const*);
 void send_to_tweakbar(riku::variant const&, void*);
 
@@ -78,12 +80,28 @@ namespace tiny
 
   void inspector::inspect(riku::variant_type& obj)
   {
-    create_view(obj.type()->name().c_str())->edit("", obj);
+    auto view = create_view(obj.type()->name().c_str());
+    
+    view->edit("", obj);
+    view->target = rk::variant(obj);
+
+    view->add("Close", rk::func_ptr(rk::function(
+      [](tiny::inspector::view& view) {
+        using namespace tiny;
+        systems::get<inspector>()->close(view.target.type()->name().c_str());
+      })),
+      rk::ptr(view)
+    );
   }
 
   void inspector::inspect(riku::variant_type const& obj)
   {
     create_view(obj.type()->name().c_str())->read("", obj);
+  }
+
+  void inspector::close(char const* name)
+  {
+    TwDeleteBar(TwGetBarByName(name));
   }
 
   bool inspector::view::edit(std::string name, riku::variant_type& value)
@@ -192,14 +210,58 @@ namespace tiny
 
   bool inspector::view::add(std::string name, riku::func_ptr button, riku::variant data)
   {
-    //TODO: add a button to the bar that executes the given function with the given data
-    return false;
+    if (buttons.find(name) != buttons.end())
+      return false;
+
+    buttons[name] = std::make_tuple(button, data);
+
+    //group parsing
+    auto delimiter = name.find_last_of('.');
+    std::string group, label, format;
+
+    if (delimiter != name.npos)
+    {
+      group = name.substr(0, delimiter);
+      label = name.substr(delimiter + 1);
+    }
+
+    if (!group.empty())
+      format += "group='" + group + "' ";
+    if (!label.empty())
+      format += "label='" + label + "' ";
+
+    return TwAddButton(
+      (TwBar*)window,
+      name.c_str(),
+      invoke_button,
+      &buttons[name],
+      format.c_str()
+    );
   }
 
   bool inspector::view::link(std::string name, riku::variant_type& target)
   {
-    //TODO: add(name, function that calls inspector::inspect(target), target)
-    return false;
+    rk::variant data(target);
+
+    if (target.type()->has_parent(rk::get<rk::variant_type>())
+      && target.as<rk::variant_type>().internal().meta()->has_parent(rk::get<tiny::guid>()))
+    {
+      auto const& guid = *dynamic_cast<tiny::guid const*>(&target.as<rk::variant_type>().internal());
+
+      std::stringstream write;
+      write << name << " [#" << guid.id.split.index << " v" << guid.id.split.version << "]";
+      name = write.str();
+    }
+    else
+      data = rk::val(target.meta(), &target);
+
+    return add(name, rk::func_ptr(rk::function(
+      [](rk::variant_type& target) {
+        using namespace tiny;
+        systems::get<inspector>()->inspect(target);
+      })),
+      data
+    );
   }
 }
 
@@ -251,6 +313,17 @@ void TW_CALL invoke_get(void* ret, void* tuple)
   fget->invoke(params);
 }
 
+void TW_CALL invoke_button(void* tuple)
+{
+  using namespace riku;
+  using namespace tiny;
+
+  auto& action = std::get<0>(*(inspector::action*) tuple);
+  auto& data = std::get<1>(*(inspector::action*) tuple);
+
+  action->invoke(riku::array(data));
+}
+
 void get_from_tweakbar(riku::variant& obj, void const* twval)
 {
   obj.assign(riku::ptr(obj.type(), twval));
@@ -258,5 +331,8 @@ void get_from_tweakbar(riku::variant& obj, void const* twval)
 
 void send_to_tweakbar(riku::variant const& obj, void* twval)
 {
-  riku::ptr(obj.type(), twval).assign(obj);
+  if (obj.type() == rk::get<std::string>())
+    TwCopyStdStringToLibrary(*static_cast<std::string*>(twval), obj.as<std::string>());
+  else
+    riku::ptr(obj.type(), twval).assign(obj);
 }

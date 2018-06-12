@@ -15,7 +15,6 @@ namespace tiny
     virtual void* data();
     virtual void const* data() const;
 
-  protected:
     union {
       unsigned long long full;
       struct {
@@ -24,7 +23,6 @@ namespace tiny
       } split;
     } id;
 
-    friend struct guid_database;
     rkMetaHook(guid);
   };
 

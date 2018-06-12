@@ -30,7 +30,7 @@ rkType(tiny::window,     rkParent(tiny::system))
 rkType(tiny::renderer,   rkParent(tiny::system))
 
 rkType(tiny::resourcemanager, rkParent(tiny::system) rkStaticFactory)
-rkType(tiny::resource, )
+rkType(tiny::resource, rkMember(filename) rkMember(me))
 
 rkType(tiny::guid_database, rkParent(tiny::system)
   rkStaticFactory
