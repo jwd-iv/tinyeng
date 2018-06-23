@@ -1,6 +1,7 @@
 #include "tiny.h"
 #include "core/vfs_file.h"
 #include "core/json_format.h"
+#include "core/transform.h"
 
 rkLink(tiny)
 rkExportLib(tiny_core)
@@ -19,4 +20,11 @@ rkType(json_format, rkParent(tiny::serializer::format)
 
 rkType(json_blob, rkParent(riku::variant_type)
   rkDefaultFactory
+)
+
+rkType(tiny::transform, rkParent(tiny::component)
+)
+
+rkType(glm::vec3, rkDefaultFactory
+  rkMember(x) rkMember(y) rkMember(z)
 )
