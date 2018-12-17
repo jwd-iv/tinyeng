@@ -30,7 +30,7 @@ namespace tiny
     return systems::get<guid_database>()->get_entry(*this).data();
   }
 
-  guid guid_database::add_entry(riku::variant e)
+  guid guid_database::add_entry(tiny::var e)
   {
     mem_block* entry = new_block();
     if (entry != NULL)
@@ -42,7 +42,7 @@ namespace tiny
     return guid();
   }
 
-  riku::variant guid_database::get_entry(guid id) const
+  tiny::var guid_database::get_entry(guid id) const
   {
     if (is_valid(id))
     {

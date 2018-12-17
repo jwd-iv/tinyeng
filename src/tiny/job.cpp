@@ -97,7 +97,7 @@ namespace tiny
     jobs.clear();
   }
 
-  bool job_list::deserialize(riku::variant_type const& blob)
+  bool job_list::deserialize(tiny::cref blob)
   { // grab the list of jobs from the blob
     auto list = blob["list"];
     if (list.is_array())

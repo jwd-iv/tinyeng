@@ -7,10 +7,10 @@ namespace tiny
   {
     allocator(riku::typeinfo t);
 
-    virtual riku::variant allocate();
-    virtual bool free(riku::variant v);
+    virtual tiny::var allocate();
+    virtual bool free(tiny::var v);
 
-    virtual unsigned capacity() const;  
+    virtual unsigned capacity() const;
     virtual unsigned allocated() const;
     virtual unsigned available() const;
 

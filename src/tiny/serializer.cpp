@@ -12,7 +12,7 @@ namespace tiny
     }
   }
 
-  riku::variant serializer::parse(char const* text, char const* fmt) const
+  tiny::var serializer::parse(char const* text, char const* fmt) const
   {
     auto pair = formats.find(fmt);
     if(pair == formats.end())
@@ -21,7 +21,7 @@ namespace tiny
     return pair->second->parse(text);
   }
 
-  riku::variant serializer::parse(char const* file) const
+  tiny::var serializer::parse(char const* file) const
   {
     auto f = systems::get<filesystem>()->open(file);
     if (f.data() == NULL)

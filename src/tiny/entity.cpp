@@ -2,7 +2,7 @@
 
 namespace tiny
 {
-  bool component::notify(char const* message, riku::variant data)
+  bool component::notify(char const* message, tiny::var data)
   {
     return false;
   }
@@ -63,7 +63,7 @@ namespace tiny
     return youngins;
   }
 
-  bool entity::notify(char const* message, riku::variant data)
+  bool entity::notify(char const* message, tiny::var data)
   {
     bool processed = false;
 

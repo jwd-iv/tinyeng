@@ -29,8 +29,8 @@ namespace tiny
   //! system for managing all existing guids
   struct guid_database : public system
   {
-    guid add_entry(riku::variant e);        //!< Create a new guid for an object
-    riku::variant get_entry(guid id) const; //!< Retrieve the object based on guid
+    guid add_entry(tiny::var e);        //!< Create a new guid for an object
+    tiny::var get_entry(guid id) const; //!< Retrieve the object based on guid
     void remove_entry(guid id);             //!< Erase an object's ID (invalidates that guid)
 
     // Inherited via system
@@ -42,7 +42,7 @@ namespace tiny
     unsigned const blocks_per_page = 4;
     struct mem_block {
       guid ID;
-      riku::variant mem;
+      tiny::var mem;
     };
 
     std::vector<mem_block*> pages;

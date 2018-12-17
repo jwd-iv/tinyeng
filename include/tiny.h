@@ -1,6 +1,14 @@
 #pragma once
 #include "RIKU.h"
 
+namespace tiny
+{
+  typedef riku::variant_type&       ref;
+  typedef riku::variant_type const& cref;
+
+  typedef riku::variant var;
+}
+
 #include "tiny/memory.h"
 #include "tiny/system.h"
 #include "tiny/guid.h"

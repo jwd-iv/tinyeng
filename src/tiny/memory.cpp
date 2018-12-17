@@ -29,7 +29,7 @@ namespace tiny
    *
    * @return     A variant pointing at the new object.
    */
-  riku::variant allocator::allocate()
+  tiny::var allocator::allocate()
   {
     if (free_list == NULL)
       add_page();
@@ -50,7 +50,7 @@ namespace tiny
    *
    * @return     true if deallocation was successful, false otherwise.
    */
-  bool allocator::free(riku::variant v)
+  bool allocator::free(tiny::var v)
   {
     if (v.type() != type || v.data() == NULL)
       return false;

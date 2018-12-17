@@ -43,7 +43,7 @@ namespace tiny
         sys->meta()->mem_funcs.del(sys);
       }
     }
-
+     
     system* create(riku::typeinfo systype)
     {
       riku::typelist children = systype->children(true);
@@ -73,7 +73,7 @@ namespace tiny
       }
     }
 
-    system* get(char const* name)
+    system* get(riku::type_id name)
     {
       riku::typeinfo systype = riku::find(name);
       if (systype == NULL)

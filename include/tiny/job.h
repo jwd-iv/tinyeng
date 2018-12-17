@@ -67,7 +67,7 @@ namespace tiny
     virtual bool done() const;
     virtual void finish();
 
-    virtual bool deserialize(riku::variant_type const& blob);
+    virtual bool deserialize(tiny::cref blob);
 
     std::vector<job::handle> jobs = std::vector<job::handle>();
 

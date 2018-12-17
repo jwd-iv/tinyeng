@@ -17,7 +17,7 @@ namespace tiny
        *
        * @return     Some implementation of variant holding the translated data
        */
-      virtual riku::variant parse(char const* text) const = 0;
+      virtual tiny::var parse(char const* text) const = 0;
 
       /**
        * @brief      Take game data and translate it into the given format
@@ -26,7 +26,7 @@ namespace tiny
        *
        * @return     The flattened block of text
        */
-      virtual std::string serialize(riku::variant obj) const = 0; 
+      virtual std::string serialize(tiny::var obj) const = 0; 
 
       rkMetaHook(format);
     };
@@ -39,7 +39,7 @@ namespace tiny
      *
      * @return     The results of format::parse
      */
-    virtual riku::variant parse(char const* text, char const* fmt) const;
+    virtual tiny::var parse(char const* text, char const* fmt) const;
 
     /**
      * @brief      Translate a given file
@@ -50,7 +50,7 @@ namespace tiny
      *
      * @return     The results of format::parse
      */
-    virtual riku::variant parse(char const* file) const;
+    virtual tiny::var parse(char const* file) const;
 
     // Inherited via system
     virtual void initialize();
@@ -75,4 +75,4 @@ namespace tiny
  * @param      FuncBody  The contents of the function (no need for wrapping curly braces)
  */
 #define tinyDeserialize(FuncBody) rkInlineMethod( deserialize, \
-  [](my_type& obj, riku::variant_type const& blob) -> bool { FuncBody } )
+  [](my_type& obj, tiny::cref blob) -> bool { FuncBody } )

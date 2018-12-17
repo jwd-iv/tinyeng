@@ -23,7 +23,7 @@ namespace tiny
     //! Retrieves all objects of a given type, in memory order
     virtual riku::array get_all(riku::typeinfo t) const;
 
-    virtual bool deserialize(riku::variant_type const& blob);
+    virtual bool deserialize(tiny::cref blob);
 
     // Inherited via job_manager
     virtual void add(job::handle j, int priority);

@@ -13,22 +13,22 @@ namespace tiny
     virtual void update(float dt);
     virtual void close();
 
-    void inspect(riku::variant_type& obj);
-    void inspect(riku::variant_type const& obj);
+    void inspect(tiny::ref obj);
+    void inspect(tiny::cref obj);
     void close(char const* name);
 
     struct view
     {
-      virtual bool edit(std::string name, riku::variant_type& value);
-      virtual bool read(std::string name, riku::variant_type const& value);
-      virtual bool link(std::string name, riku::variant_type& target);
+      virtual bool edit(std::string name, tiny::ref value);
+      virtual bool read(std::string name, tiny::cref value);
+      virtual bool link(std::string name, tiny::ref target);
 
     protected:
-      virtual bool add(std::string name, riku::var<riku::function> button, riku::variant data = riku::variant());
-      virtual bool add(std::string name, riku::typeinfo type, riku::var<riku::function> get, riku::var<riku::function> set = riku::var<riku::function>(), riku::variant obj = riku::variant());
+      virtual bool add(std::string name, riku::var<riku::function> button, tiny::var data = riku::variant());
+      virtual bool add(std::string name, riku::typeinfo type, riku::var<riku::function> get, riku::var<riku::function> set = riku::var<riku::function>(), tiny::var obj = riku::variant());
 
     public:
-      riku::variant target;
+      tiny::var target;
       std::unordered_map<std::string, get_set> values;
       std::unordered_map<std::string, action> buttons;
       void* window = NULL;

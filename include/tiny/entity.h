@@ -16,7 +16,7 @@ namespace tiny
      *
      * @return     `true` if this component responded in any way
      */
-    virtual bool notify(char const* message, riku::variant data);
+    virtual bool notify(char const* message, tiny::var data);
 
     rkMetaHandle(component);
   };
@@ -48,10 +48,10 @@ namespace tiny
     virtual std::vector<guid> children(bool grandchildren = false) const;
 
     //! Passes the event to all components and children
-    virtual bool notify(char const* message, riku::variant data);
+    virtual bool notify(char const* message, tiny::var data);
 
-    virtual bool deserialize(riku::variant_type const& blob);
-    virtual bool serialize(riku::variant_type& blob) const;
+    virtual bool deserialize(tiny::cref blob);
+    virtual bool serialize(tiny::ref blob) const;
 
     //! Template shorthand to streamline getting a component
     template<typename T> inline T* find(bool useparent = false) const
