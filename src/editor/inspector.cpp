@@ -277,10 +277,10 @@ TwType translate_type(riku::variant const& val)
   else if (val.type() == riku::get<std::string>()) return TW_TYPE_STDSTRING;
   else if (val.type() == riku::find("glm::quat4")) return TW_TYPE_QUAT4F;
   else if (val.type() == riku::find("glm::vec3"))  return TW_TYPE_DIR3F;
-  //else if (val.type() == riku::get<COLOR3F>()) return TW_TYPE_COLOR3F;
-  //else if (val.type() == riku::get<COLOR4F>()) return TW_TYPE_COLOR4F;
-  //else if (val.type() == riku::get<QUAT4D>()) return TW_TYPE_QUAT4D;
-  //else if (val.type() == riku::get<DIR3D>()) return TW_TYPE_DIR3D;
+  //else if (val.type() == riku::get<COLOR3F>())     return TW_TYPE_COLOR3F;
+  //else if (val.type() == riku::get<COLOR4F>())     return TW_TYPE_COLOR4F;
+  //else if (val.type() == riku::get<QUAT4D>())      return TW_TYPE_QUAT4D;
+  //else if (val.type() == riku::get<DIR3D>())       return TW_TYPE_DIR3D;
   else return TW_TYPE_UNDEF;
 }
 

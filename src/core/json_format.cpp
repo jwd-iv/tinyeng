@@ -59,7 +59,7 @@ bool json_blob::assign(variant_type const& rhs)
   return false;
 }
 
-bool json_blob::assignto(variant_type& rhs) const
+bool json_blob::modify(variant_type& rhs) const
 {
   if(rhs.type() == NULL || rhs.data() == NULL)
     return false;
@@ -72,7 +72,7 @@ bool json_blob::assignto(variant_type& rhs) const
 
   if(!did_stuff)
     for (auto const& member : val.getMemberNames())
-      did_stuff |= property(member).assignto(rhs[member]);
+      did_stuff |= property(member).modify(rhs[member]);
 
   return did_stuff;
 }

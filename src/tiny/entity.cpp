@@ -86,11 +86,11 @@ namespace tiny
     auto childs = blob["children"];
 
     for (auto const& compname : comps.properties())
-      comps[compname.c_str()].assignto(add(compname.c_str()));
+      comps[compname.c_str()].modify(add(compname.c_str()));
 
     if (childs.is_array())
       for (auto const& iter : *childs.as_array())
-        iter.assignto(add("entity"));
+        iter.modify(add("entity"));
 
     return true;
   }

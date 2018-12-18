@@ -96,7 +96,7 @@ namespace tiny
     {
       for (auto const& ent : *list.as_array())
       {
-        ent.assignto(create(riku::get<entity>()));
+        ent.modify(create(riku::get<entity>()));
       }
     }
     blob["update"] >> update_jobs;

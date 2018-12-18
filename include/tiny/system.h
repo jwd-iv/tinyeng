@@ -1,7 +1,7 @@
 namespace tiny
 {
   /**
-   * @brief      The interface for global level services.
+   * @brief      The interface for engine-wide services and processes.
    * 
    * Every system is a globally accessible singleton, that is created and initialized
    * before the game loop begins, updates every tick, and is then closed and destroyed

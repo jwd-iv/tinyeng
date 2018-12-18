@@ -19,7 +19,7 @@ struct json_blob : public riku::variant_type
   virtual void const* data() const;
 
   virtual bool assign(variant_type const& rhs);
-  virtual bool assignto(variant_type& rhs) const;
+  virtual bool modify(variant_type& rhs) const;
 
   virtual riku::variant property(riku::string n);
   virtual riku::variant property(riku::string n) const;

@@ -113,7 +113,7 @@ namespace tiny
             riku::val newjob(jobtype);
             if (newjob.data() != NULL)
             {
-              iter.assignto(newjob);
+              iter.modify(newjob);
               add(newjob);
             }
           }
