@@ -29,7 +29,7 @@ include_directories(
     .
     ${tiny_SOURCE_DIR}/../ext/ttvfs/ttvfs
     ${tiny_SOURCE_DIR}/../ext/ttvfs/ttvfs_zip
-    ${tiny_SOURCE_DIR}/../ext/glm
+    ${tiny_SOURCE_DIR}/../ext/glm/glm
 )
 
 file(GLOB_RECURSE TINY_CORE_src *.cpp)

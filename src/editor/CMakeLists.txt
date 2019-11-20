@@ -25,7 +25,7 @@ set_target_properties(tiny-editor PROPERTIES
 )
 
 target_link_libraries(tiny-editor tiny)
-target_link_libraries(tiny-editor AntTweakBar)
+target_link_libraries(tiny-editor AntTweakBar64)
 
 install(
   DIRECTORY ${PROJECT_SOURCE_DIR}/include/tiny/editor

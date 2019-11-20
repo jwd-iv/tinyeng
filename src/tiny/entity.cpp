@@ -29,7 +29,11 @@ namespace tiny
       if (world.data() != NULL)
       { // make it and add it
         guid newcomp = world->create(t);
-        components.push_back(newcomp);
+		if (newcomp.data() != NULL)
+		{
+			components.push_back(newcomp);
+			newcomp.as<component>().parent = me;
+		}
         return newcomp;
       }
     }
@@ -43,7 +47,7 @@ namespace tiny
 
     if (t != NULL && t->has_parent(riku::get<component>()))
       for (auto iter : components)
-        if (iter.to<component>()->meta()->has_parent(t))
+        if (iter.to<component>()->meta() == t)
           return iter;
 
     if (useparent && parent.is<entity>())

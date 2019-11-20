@@ -33,14 +33,17 @@ namespace tiny
 
   guid space::create(riku::typeinfo t, char const* archetype)
   {
+    guid ret;
+    component* dbug;
+
     if (t == riku::get<entity>())
     {
       entity* ent = objects.allocate().to<entity>();
+      dbug = ent;
       if (ent != NULL)
       {
-        ent->me = guid::create(ent);
+        ret = ent->me = guid::create(ent);
         ent->world = this;
-        return ent->me;
       }
     }
     else if (t->has_parent(riku::get<component>()))
@@ -57,13 +60,24 @@ namespace tiny
       }
 
       component* comp = pair->second->allocate().to<component>();
+      dbug = comp;
       if (comp != NULL)
       {
-        comp->me = guid::create(comp);
-        return comp->me;
+        ret = comp->me = guid::create(comp);
       }
     }
-    return guid();
+
+    if (archetype != NULL && ret.data() != NULL)
+    {
+      std::string arcFileName("game/archetype/");
+      arcFileName += std::string(archetype) + ".json";
+
+      auto arcblob = systems::get<serializer>()->parse(arcFileName.c_str());
+
+      arcblob.modify(ret);
+    }
+
+    return ret;
   }
 
   void space::destroy(guid ID)
@@ -96,7 +110,10 @@ namespace tiny
     {
       for (auto const& ent : *list.as_array())
       {
-        ent.modify(create(riku::get<entity>()));
+        std::string archetype;
+        ent["archetype"] >> archetype;
+        
+        ent.modify(create(riku::get<entity>(), archetype.c_str()));
       }
     }
     blob["update"] >> update_jobs;
