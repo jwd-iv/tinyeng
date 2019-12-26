@@ -67,16 +67,6 @@ namespace tiny
       }
     }
 
-    if (archetype != NULL && ret.data() != NULL)
-    {
-      std::string arcFileName("game/archetype/");
-      arcFileName += std::string(archetype) + ".json";
-
-      auto arcblob = systems::get<serializer>()->parse(arcFileName.c_str());
-
-      arcblob.modify(ret);
-    }
-
     return ret;
   }
 
@@ -109,11 +99,8 @@ namespace tiny
     if (list.is_array())
     {
       for (auto const& ent : *list.as_array())
-      {
-        std::string archetype;
-        ent["archetype"] >> archetype;
-        
-        ent.modify(create(riku::get<entity>(), archetype.c_str()));
+      {        
+        ent.modify(create(riku::get<entity>()));
       }
     }
     blob["update"] >> update_jobs;

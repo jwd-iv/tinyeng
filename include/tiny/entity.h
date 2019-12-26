@@ -27,6 +27,7 @@ namespace tiny
     std::string archetype;        //!< The archetype used to create this
     riku::var<space> world;       //!< A handle to the containing space
     std::vector<guid> components; //!< Handles to all the component parts of this object
+    std::vector<guid> children;   //!< Handles to all child entities
 
     ~entity();
  
@@ -45,7 +46,7 @@ namespace tiny
     virtual guid find(char const* type, bool useparent = false) const;
 
     //! Get a list of all child entities to this object
-    virtual std::vector<guid> children(bool grandchildren = false) const;
+    //virtual std::vector<guid> children(bool grandchildren = false) const;
 
     //! Passes the event to all components and children
     virtual bool notify(char const* message, tiny::var data);

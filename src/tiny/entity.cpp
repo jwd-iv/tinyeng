@@ -20,22 +20,33 @@ namespace tiny
   guid entity::add(char const* type)
   {
     riku::typeinfo t = riku::find(type);
-    if (t != NULL && t->has_parent(riku::get<component>()))
+    if (t == NULL || world.data() == NULL)
+      return guid();
+    else if (t->has_parent(riku::get<entity>()))
+    {
+      // make it and add it
+      guid child = world->create(t);
+      if (child.data() != NULL)
+      {
+        children.push_back(child);
+        child.as<entity>().parent = me;
+      }
+      return child;
+    }
+    else if (t->has_parent(riku::get<component>()))
     {
       const guid existing = find(type);
       if (existing.data() != NULL)
         return existing;
 
-      if (world.data() != NULL)
-      { // make it and add it
-        guid newcomp = world->create(t);
-		if (newcomp.data() != NULL)
-		{
-			components.push_back(newcomp);
-			newcomp.as<component>().parent = me;
-		}
-        return newcomp;
+      // make it and add it
+      guid newcomp = world->create(t);
+      if (newcomp.data() != NULL)
+      {
+        components.push_back(newcomp);
+        newcomp.as<component>().parent = me;
       }
+      return newcomp;
     }
 
     return guid();
@@ -56,7 +67,7 @@ namespace tiny
       return guid();
   }
 
-  std::vector<guid> entity::children(bool grandchildren) const
+  /*std::vector<guid> entity::children(bool grandchildren) const
   {
     std::vector<guid> youngins;
 
@@ -65,7 +76,7 @@ namespace tiny
         youngins.push_back(iter);
 
     return youngins;
-  }
+  }*/
 
   bool entity::notify(char const* message, tiny::var data)
   {
@@ -77,13 +88,20 @@ namespace tiny
     return processed;
   }
 
-  bool entity::deserialize(riku::variant_type const & blob)
+  bool entity::deserialize(tiny::cref blob)
   {
+    std::string archetype;
     blob["archetype"] >> archetype;
 
     if (!archetype.empty())
     {
-      //TODO: grab a copy of the archetype, assign blob to it and use the result
+      std::string arcFileName("game/archetype/");
+      arcFileName += std::string(archetype) + ".json";
+
+      auto arcblob = systems::get<serializer>()->parse(arcFileName.c_str());
+
+      deserialize(arcblob);
+      this->archetype = archetype;
     }
 
     auto comps = blob["components"];
@@ -93,13 +111,24 @@ namespace tiny
       comps[compname.c_str()].modify(add(compname.c_str()));
 
     if (childs.is_array())
+    {
+      int i = 0;
       for (auto const& iter : *childs.as_array())
-        iter.modify(add("entity"));
+      {
+        tiny::guid kid = guid();
+        if (children.size() < ++i)
+          kid = add("tiny::entity");
+        else
+          kid = children[i - 1];
+
+        iter.modify(kid);
+      }
+    }
 
     return true;
   }
 
-  bool entity::serialize(riku::variant_type & blob) const
+  bool entity::serialize(tiny::ref blob) const
   {
     return true;
   }

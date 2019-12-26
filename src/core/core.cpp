@@ -28,3 +28,7 @@ rkType(tiny::transform, rkParent(tiny::component)
 rkType(glm::vec3, rkDefaultFactory
   rkMember(x) rkMember(y) rkMember(z)
 )
+
+rkType(glm::vec4, rkDefaultFactory
+  rkMember(r) rkMember(g) rkMember(b) rkMember(a)
+)
